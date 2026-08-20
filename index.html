@@ -7,6 +7,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="沖繩清單">
 <meta name="theme-color" content="#0b3a4a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>沖繩打包小抄</title>
 <style>
   :root{
@@ -36,6 +38,9 @@
   .tide-fill{height:100%;width:0%;border-radius:20px;background:linear-gradient(90deg,var(--sea) 0%,var(--aqua) 100%);transition:width .5s cubic-bezier(.4,0,.2,1);position:relative;}
   .tide-fill::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);animation:shimmer 2.6s linear infinite;}
   @keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+  .offline-status{margin-top:9px;font-size:12px;font-weight:700;color:#cfe0dc;text-align:center;padding:5px 10px;border-radius:9px;background:rgba(255,255,255,.08);}
+  .offline-status.ok{color:#0a2e26;background:var(--aqua);}
+  .offline-status.err{color:#fff;background:var(--coral);}
   main{margin-top:22px;}
   .card{background:var(--card);border-radius:18px;padding:18px 16px 8px;margin:0 0 16px;box-shadow:0 10px 30px rgba(4,26,34,.22);}
   .card.must{border:2px solid var(--coral);padding:16px 16px 8px;}
@@ -103,6 +108,7 @@
 <div class="tide">
   <div class="tide-label"><span>打包進度（必帶＋一般）</span><b id="pct">0%</b></div>
   <div class="tide-track"><div class="tide-fill" id="fill"></div></div>
+  <div class="offline-status" id="offstatus">檢查離線狀態…</div>
 </div>
 
 <main class="wrap">
@@ -311,6 +317,23 @@
     note.textContent = "已清空";
   });
   load();
+})();
+</script>
+<script>
+(function(){
+  var el = document.getElementById("offstatus");
+  function set(t, cls){ if(el){ el.textContent = t; el.className = "offline-status" + (cls ? " " + cls : ""); } }
+  if(!("serviceWorker" in navigator)){ set("此瀏覽器不支援離線快取", "err"); return; }
+  if(navigator.serviceWorker.controller){ set("✓ 離線已就緒，可切飛航使用", "ok"); }
+  else { set("快取中… 有網路時請重整一次", ""); }
+  navigator.serviceWorker.addEventListener("controllerchange", function(){
+    set("✓ 離線已就緒，可切飛航使用", "ok");
+  });
+  window.addEventListener("load", function(){
+    navigator.serviceWorker.register("sw.js").then(function(reg){
+      if(reg.active && navigator.serviceWorker.controller){ set("✓ 離線已就緒，可切飛航使用", "ok"); }
+    }).catch(function(){ set("離線註冊失敗，請確認 sw.js 有上傳", "err"); });
+  });
 })();
 </script>
 </body>

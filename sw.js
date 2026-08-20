@@ -1,6 +1,6 @@
 // 沖繩打包小抄 — offline service worker
 // Bump CACHE version whenever you update the files, so clients refetch.
-const CACHE = "okinawa-v1";
+const CACHE = "okinawa-v2";
 const ASSETS = [
   "./",
   "./index.html",
