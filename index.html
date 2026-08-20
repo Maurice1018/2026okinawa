@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="沖繩清單">
+<meta name="theme-color" content="#0b3a4a">
+<title>沖繩打包小抄</title>
+<style>
+  :root{
+    --sea-deep:#0b3a4a; --sea:#12617a; --aqua:#2fd0c8; --aqua-soft:#a9ede8;
+    --sand:#f4ecdd; --ink:#0d2530; --ink-soft:#4a6570;
+    --coral:#ff6b5e; --coral-bg:#fff1ef; --line:#d8e4e6; --card:#ffffff;
+    --meal-bg:#e8f5f2; --meal-ink:#1c7a6b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{background:#082a37;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Heiti TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
+    color:var(--ink);
+    background:radial-gradient(120% 60% at 50% 0%, #16708c 0%, var(--sea-deep) 55%, #082a37 100%);
+    background-attachment:fixed;
+    min-height:100vh; padding:0 0 64px; line-height:1.55;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 16px;}
+  header{padding:30px 16px 20px;text-align:left;color:#eafaf8;max-width:640px;margin:0 auto;}
+  .eyebrow{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--aqua);font-weight:700;}
+  h1{font-size:30px;line-height:1.15;margin:6px 0 4px;font-weight:800;letter-spacing:-.01em;}
+  h1 span{color:var(--aqua-soft);font-weight:600;font-size:19px;display:block;letter-spacing:.02em;margin-top:2px;}
+  .tide{margin:18px auto 0;max-width:640px;padding:0 16px;}
+  .tide-label{display:flex;justify-content:space-between;align-items:baseline;color:#d7f3ef;font-size:13px;margin-bottom:7px;font-weight:600;}
+  .tide-label b{color:#fff;font-size:15px;}
+  .tide-track{height:14px;border-radius:20px;background:rgba(255,255,255,.14);overflow:hidden;position:relative;}
+  .tide-fill{height:100%;width:0%;border-radius:20px;background:linear-gradient(90deg,var(--sea) 0%,var(--aqua) 100%);transition:width .5s cubic-bezier(.4,0,.2,1);position:relative;}
+  .tide-fill::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);animation:shimmer 2.6s linear infinite;}
+  @keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+  main{margin-top:22px;}
+  .card{background:var(--card);border-radius:18px;padding:18px 16px 8px;margin:0 0 16px;box-shadow:0 10px 30px rgba(4,26,34,.22);}
+  .card.must{border:2px solid var(--coral);padding:16px 16px 8px;}
+  .card-head{display:flex;align-items:center;gap:10px;padding:0 2px 4px;}
+  .card-head .num{font-size:12px;font-weight:800;color:#fff;background:var(--sea);width:24px;height:24px;border-radius:8px;display:grid;place-items:center;flex:none;}
+  .card.must .card-head .num{background:var(--coral);}
+  .card-head h2{font-size:17px;font-weight:800;letter-spacing:.01em;}
+  .card-head .count{margin-left:auto;font-size:12px;color:var(--ink-soft);font-weight:600;background:var(--sand);padding:3px 9px;border-radius:20px;}
+  .card.must .card-head .count{background:var(--coral-bg);color:var(--coral);}
+  .hint{font-size:12.5px;color:var(--ink-soft);padding:2px 2px 10px;}
+  .card.must .hint{color:var(--coral);font-weight:600;}
+  .row{display:flex;align-items:flex-start;gap:12px;padding:11px 4px;border-top:1px solid var(--line);cursor:pointer;}
+  .rows .row:first-child{border-top:none;}
+  .box{width:22px;height:22px;border-radius:7px;border:2px solid #b7c9cd;flex:none;margin-top:1px;display:grid;place-items:center;transition:all .15s ease;background:#fff;}
+  .card.must .box{border-color:#f4b5ae;}
+  .box svg{width:13px;height:13px;stroke:#fff;stroke-width:3.5;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:0;transform:scale(.5);transition:all .15s ease;}
+  .row.done .box{background:var(--aqua);border-color:var(--aqua);}
+  .card.must .row.done .box{background:var(--coral);border-color:var(--coral);}
+  .row.done .box svg{opacity:1;transform:scale(1);}
+  .row .txt{font-size:15px;color:var(--ink);transition:color .15s ease;}
+  .row .txt small{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:1px;line-height:1.4;}
+  .row.done .txt{color:#9aacae;text-decoration:line-through;text-decoration-color:#cdd9db;}
+  .row.done .txt small{text-decoration:none;color:#b4c0c2;}
+  .day{border-top:1px solid var(--line);padding:14px 4px;}
+  .day:first-of-type{border-top:none;}
+  .day .d{font-size:13px;font-weight:800;color:var(--sea);}
+  .day .d em{font-style:normal;color:var(--ink-soft);font-weight:600;margin-left:6px;font-size:12px;}
+  .flow{font-size:13.5px;color:var(--ink);margin-top:5px;line-height:1.65;}
+  .flow b{color:var(--sea);font-weight:700;}
+  .flow .warn{color:var(--coral);font-weight:700;}
+  .meals{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap;}
+  .meal{font-size:12px;font-weight:600;padding:4px 10px;border-radius:9px;background:var(--meal-bg);color:var(--meal-ink);}
+  .meal b{font-weight:800;}
+  .meal.todo{background:var(--coral-bg);color:var(--coral);}
+  .mkt small{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:2px;line-height:1.45;}
+  .hbox{border:1.5px solid var(--line);border-radius:14px;overflow:hidden;margin:14px 0 0;}
+  .hbox-head{padding:10px 13px;display:flex;align-items:center;gap:8px;color:#fff;}
+  .hbox.north .hbox-head{background:var(--sea);}
+  .hbox.central .hbox-head{background:#1c7a6b;}
+  .hbox-head .rgn{font-size:14px;font-weight:800;letter-spacing:.03em;}
+  .hbox-head .dates{margin-left:auto;font-size:11px;font-weight:700;background:rgba(255,255,255,.22);padding:2px 9px;border-radius:20px;}
+  .hbox-body{padding:12px 13px 8px;}
+  .h-title{font-size:15px;font-weight:800;color:var(--ink);}
+  .h-meta{font-size:12.5px;color:var(--ink-soft);margin-top:3px;}
+  .h-note{font-size:13px;color:var(--ink);margin-top:5px;line-height:1.55;}
+  .h-note b{color:var(--coral);}
+  .mkt-label{font-size:12px;font-weight:800;color:var(--sea);letter-spacing:.05em;margin:12px 0 4px;}
+  .mkt{padding:8px 0;border-top:1px dashed var(--line);}
+  .mkt:first-of-type{border-top:none;}
+  .mkt b{font-size:14px;color:var(--ink);}
+  .mkt .tag{font-size:11px;font-weight:700;color:var(--meal-ink);background:var(--meal-bg);padding:2px 8px;border-radius:7px;margin-left:8px;display:inline-block;}
+  footer{text-align:center;padding:8px 16px 0;}
+  .reset{background:rgba(255,255,255,.1);color:#cfeeea;border:1px solid rgba(255,255,255,.25);padding:9px 18px;border-radius:22px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+  .reset:active{background:rgba(255,255,255,.2);}
+  .saved-note{color:#8fc9c2;font-size:11.5px;margin-top:12px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Okinawa · 6 Days</div>
+  <h1>沖繩打包小抄<span>8/22 – 8/27 · 自駕</span></h1>
+</header>
+
+<div class="tide">
+  <div class="tide-label"><span>打包進度（必帶＋一般）</span><b id="pct">0%</b></div>
+  <div class="tide-track"><div class="tide-fill" id="fill"></div></div>
+</div>
+
+<main class="wrap">
+
+  <section class="card must" data-main>
+    <div class="card-head"><div class="num">!</div><h2>極重要 · 必定要帶到</h2><span class="count"></span></div>
+    <div class="hint">出發行前多次確認</div>
+    <div class="rows">
+      <div class="row" data-id="m1"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">護照</span></div>
+      <div class="row" data-id="m2"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">日本駕照譯本</span></div>
+      <div class="row" data-id="m3"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">台灣駕照正本</span></div>
+      <div class="row" data-id="m4"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">租車預約確認單<small>兩天前完成事前確認可加速取車</small></span></div>
+      <div class="row" data-id="m5"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">常備藥品</span></div>
+    </div>
+  </section>
+
+  <section class="card" data-main>
+    <div class="card-head"><div class="num">2</div><h2>一般確認</h2><span class="count"></span></div>
+    <div class="hint">少了就現場花錢處理</div>
+    <div class="rows">
+      <div class="row" data-id="g1"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">SIM 卡</span></div>
+      <div class="row" data-id="g10"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">VJW QR Code<small>Visit Japan Web 入境／海關掃碼，先截圖存離線</small></span></div>
+      <div class="row" data-id="g2"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">日幣現金<small>小店、停車場常只收現金</small></span></div>
+      <div class="row" data-id="g3"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">行動電源 ＋ 充電線</span></div>
+      <div class="row" data-id="g4"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">泳具（浮潛用具）</span></div>
+      <div class="row" data-id="g5"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">拖鞋</span></div>
+      <div class="row" data-id="g6"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">雨具<small>颱風季必備</small></span></div>
+      <div class="row" data-id="g7"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">換洗衣物 5 套 ＋ 毛巾<small>6 天份</small></span></div>
+      <div class="row" data-id="g8"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">髒衣物袋</span></div>
+      <div class="row" data-id="g9"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">衛生濕紙巾</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><div class="num">＋</div><h2>可選用品</h2><span class="count"></span></div>
+    <div class="hint">有帶更好，沒帶也 OK</div>
+    <div class="rows">
+      <div class="row" data-id="o1"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">相機</span></div>
+      <div class="row" data-id="o2"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">腳架 / 自拍桿<small>部分景區禁用，看現場告示</small></span></div>
+      <div class="row" data-id="o3"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">小寶特瓶裝水</span></div>
+      <div class="row" data-id="o4"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">防曬 / 防蚊</span></div>
+      <div class="row" data-id="o5"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">個人盥洗用具 / 化妝包</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><div class="num">✓</div><h2>行程確認</h2><span class="count"></span></div>
+    <div class="hint">出發前先搞定的預約與確認</div>
+    <div class="rows">
+      <div class="row" data-id="t1"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">美麗海水族館門票線上買</span></div>
+      <div class="row" data-id="t2"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">玉泉洞門票線上買<small>同票已含毒蛇秀</small></span></div>
+      <div class="row" data-id="t3"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">普天滿宮：提早決定是否去<small>需預約，大概率不去</small></span></div>
+      <div class="row" data-id="t4"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Gangala 之谷：提早決定是否去<small>需預約</small></span></div>
+      <div class="row" data-id="t5"><span class="box"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">颱風動態 ＋ 確認班機</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><div class="num">✎</div><h2>每天行程 ＋ 現場提醒</h2></div>
+    <div class="hint">紅色的餐＝目前未定，記得先想好</div>
+
+    <div class="day">
+      <div class="d">Day 1<em>8/22 六 · 進北部</em></div>
+      <div class="flow">15:55 落地 → 取車（實際上路約 <b>17:00–17:30</b>）→ 開往北部飯店（約 90 分）→ check-in（估 <b>19:00 前後</b>）→ 飯店休息／海邊散步。<span class="warn">若 7 點後才到，先用 Booking.com 傳訊息通知櫃檯。</span></div>
+      <div class="meals">
+        <span class="meal todo"><b>晚餐</b> 未定 · 那霸/路上先買</span>
+        <span class="meal todo"><b>隔天早餐</b> 一起買（北部收很早）</span>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="d">Day 2<em>8/23 日 · 北部</em></div>
+      <div class="flow">美麗海水族館（8:30 先衝，<b>先選好海豚秀場次</b>：10:30 / 11:30 / 13:00）→ 古宇利島（玩水看海）→ 名護鳳梨園（可選）→ 回飯店玩水。</div>
+      <div class="meals">
+        <span class="meal"><b>午餐</b> 古宇利島 · 海膽丼/蝦蝦飯（週日會排隊）</span>
+        <span class="meal todo"><b>晚餐</b> 未定 · 回飯店後再看</span>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="d">Day 3<em>8/24 一 · 移中部</em></div>
+      <div class="flow">海中展望塔（早）→ 開 50 分 → 永旺來客夢（午餐＋逛街）→ 普天滿宮（可選，<b>大概率不去</b>）→ <b>先到 ARAHA STAY check-in、放行李</b> → 走幾分鐘 美國村（夜景＋晚餐）。<span class="warn">這天最滿又搬家，先放行李再逛比較順。</span></div>
+      <div class="meals">
+        <span class="meal"><b>午餐</b> 來客夢美食街</span>
+        <span class="meal"><b>晚餐</b> 美國村</span>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="d">Day 4<em>8/25 二 · 南部</em></div>
+      <div class="flow">開 30 分 → 沖繩世界／玉泉洞 → 毒蛇博物館 → Gangala 之谷（可選）→ 開 25 分 → 瀨長島（夕陽約 18:50）→ 開 35 分 摸黑回中部。</div>
+      <div class="meals">
+        <span class="meal todo"><b>午餐</b> 未定 · 沖繩世界園區內/附近先查</span>
+        <span class="meal"><b>晚餐</b> 瀨長島 Umikaji Terrace</span>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="d">Day 5<em>8/26 三 · 中部</em></div>
+      <div class="flow">首里城（8:30 開，<b>正殿只能看外觀、進不了內部</b>；<b>停車需收費</b>）→ 開 15 分 → 泊港漁市場 → 開 20 分 → PARCO CITY（逛街收尾、伴手禮）→ 回飯店。</div>
+      <div class="meals">
+        <span class="meal"><b>午餐</b> 泊港漁市場 · 生魚片</span>
+        <span class="meal todo"><b>晚餐</b> 未定 · PARCO CITY 或飯店附近</span>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="d">Day 6<em>8/27 四 · 回程</em></div>
+      <div class="flow"><b>盡早退房別卡 11 點</b> → 開 30 分 → 加油／機場還車／寄放行李 → 輕軌 25 分 → 琉貿百貨＋國際通（逛街）→ 回機場 <b>14:55 前</b> → 16:55 飛。</div>
+      <div class="meals">
+        <span class="meal todo"><b>午餐</b> 國際通解決 · 時間趕，早點吃</span>
+        <span class="meal"><b>晚餐</b> 機上/回台後</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><div class="num">⌂</div><h2>飯店 ＋ 附近超市</h2></div>
+    <div class="hint">兩間都是公寓式（有廚房），靠超市買回來吃/煮</div>
+
+    <div class="hbox north">
+      <div class="hbox-head"><span class="rgn">北部 · 本部</span><span class="dates">D1–D2</span></div>
+      <div class="hbox-body">
+        <div class="h-title">Churaumi On The Beach Motobu</div>
+        <div class="h-meta">2573-1 Sakimotobu, Motobu ｜ ☎ +81 980-47-2277</div>
+        <div class="h-note">公寓式：有廚房＋洗烘衣機，房間旁就是海灘。周邊餐廳少，靠超市買回來吃/煮最省事。<b>Day 1 晚到（估 7 點後）先用 Booking.com 傳訊息通知櫃檯人員。</b></div>
+        <div class="mkt-label">附近超市 · 開車約 10 分內</div>
+        <div class="mkt"><b>BIG Express Motobu（AEON）</b><span class="tag">車程約10分</span><span class="tag">8:00–22:00</span><small>壽司/生魚片/熟食便當強，海景漂亮</small></div>
+        <div class="mkt"><b>Town Plaza Kanehide 美ら海市場</b><span class="tag">車程約10分</span><span class="tag">7:00–23:00</span><small>靠水族館，在地海鮮、價格實惠</small></div>
+        <div class="mkt"><b>San-A 本部（Tancha）</b><span class="tag">車程約11分</span><span class="tag">9:00–23:00</span><small>大型超市，日用品也齊、免費停車</small></div>
+      </div>
+    </div>
+
+    <div class="hbox central">
+      <div class="hbox-head"><span class="rgn">中部 · 北谷</span><span class="dates">D3–D5</span></div>
+      <div class="hbox-body">
+        <div class="h-title">ARAHA STAY</div>
+        <div class="h-meta">1-12-1 Kitamae, Chatan（阿波根）｜ ☎ +81 80-6490-1888</div>
+        <div class="h-note">公寓式、有廚房＋洗烘衣機；走路就到 San-A、Lawson/FamilyMart/星巴克，近美國村。</div>
+        <div class="mkt-label">附近超市 · 開車約 10 分內</div>
+        <div class="mkt"><b>San-A Hamby Town</b><span class="tag">車程約2分/可步行</span><span class="tag">9:00–22:00</span><small>最順：食材、熟食便當、藥妝、日用品都有，招牌有英文</small></div>
+        <div class="mkt"><b>AEON 北谷（Mihama）</b><span class="tag">車程約6分</span><span class="tag">9:00–23:00</span><small>超大 mall＋美食街，下雨天躲雨首選，就在美國村旁</small></div>
+        <div class="mkt"><b>San-A 北谷浜川</b><span class="tag">車程約9分</span><span class="tag">9:00–23:00</span><small>大型超市＋藥妝</small></div>
+        <div class="mkt"><b>Fresh Plaza Union 北谷（24h）</b><span class="tag">車程約11分</span><small>深夜也開，但只收現金；在坡上</small></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <button class="reset" id="reset">清空所有勾選</button>
+    <div class="saved-note" id="savenote"></div>
+  </footer>
+</main>
+
+<script>
+(function(){
+  var KEY = "okinawa_checklist_v2";
+  var state = {};
+  var rows = Array.prototype.slice.call(document.querySelectorAll(".row[data-id]"));
+  var fill = document.getElementById("fill");
+  var pct = document.getElementById("pct");
+  var note = document.getElementById("savenote");
+  var hasCloud = (typeof window !== "undefined" && window.storage && typeof window.storage.get === "function");
+  function stamp(t){ note.textContent = t + " · " + new Date().toLocaleTimeString("zh-TW",{hour:"2-digit",minute:"2-digit"}); }
+
+  function render(){
+    rows.forEach(function(r){ r.classList.toggle("done", !!state[r.dataset.id]); });
+    Array.prototype.slice.call(document.querySelectorAll("section.card")).forEach(function(card){
+      var cr = Array.prototype.slice.call(card.querySelectorAll(".row[data-id]"));
+      var c = card.querySelector(".count");
+      if(!cr.length || !c) return;
+      var d = cr.filter(function(r){ return state[r.dataset.id]; }).length;
+      c.textContent = d + " / " + cr.length;
+    });
+    var main = document.querySelectorAll("section[data-main] .row[data-id]");
+    var done=0; Array.prototype.slice.call(main).forEach(function(r){ if(state[r.dataset.id]) done++; });
+    var p = main.length ? Math.round(done/main.length*100) : 0;
+    fill.style.width = p+"%"; pct.textContent = p+"%";
+  }
+  function save(){
+    if(hasCloud){
+      try{ window.storage.set(KEY, JSON.stringify(state), false); stamp("已儲存"); }
+      catch(e){ note.textContent = "（此環境無法儲存，勾選僅本次有效）"; }
+    } else {
+      try{ localStorage.setItem(KEY, JSON.stringify(state)); stamp("已存到這台手機"); }
+      catch(e){ note.textContent = "（此環境無法儲存，勾選僅本次有效）"; }
+    }
+  }
+  function load(){
+    if(hasCloud){
+      try{ var pr = window.storage.get(KEY, false);
+        if(pr && pr.then){ pr.then(function(res){ if(res && res.value){ state = JSON.parse(res.value); render(); } }).catch(function(){}); }
+      }catch(e){}
+      note.textContent = "打勾會自動儲存";
+    } else {
+      try{ var v = localStorage.getItem(KEY); if(v) state = JSON.parse(v); }catch(e){}
+      note.textContent = "打勾會存在這台手機（離線可用）";
+    }
+    render();
+  }
+  rows.forEach(function(r){ r.addEventListener("click", function(){ var id=r.dataset.id; state[id]=!state[id]; render(); save(); }); });
+  document.getElementById("reset").addEventListener("click", function(){
+    state = {}; render();
+    if(hasCloud){ try{ window.storage.delete(KEY, false); }catch(e){} }
+    else { try{ localStorage.removeItem(KEY); }catch(e){} }
+    note.textContent = "已清空";
+  });
+  load();
+})();
+</script>
+</body>
+</html>
