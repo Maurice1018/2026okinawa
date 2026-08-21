@@ -1,6 +1,6 @@
 // 沖繩打包小抄 — offline service worker
 // Bump CACHE version whenever you update the files, so clients refetch.
-const CACHE = "okinawa-v3";
+const CACHE = "okinawa-v5";
 const ASSETS = [
   "./",
   "./index.html",
@@ -11,7 +11,10 @@ const ASSETS = [
   "./img/araha-parking-1-ramp.jpg",
   "./img/araha-parking-2-ramp-up.jpg",
   "./img/araha-parking-3-spot-402.jpg",
-  "./img/araha-parking-4-raft.jpg"
+  "./img/araha-parking-4-raft.jpg",
+  "./img/araha-checkin-1-keybox.jpg",
+  "./img/araha-checkin-2-entrance-panel.jpg",
+  "./img/araha-checkin-3-door-key.jpg"
 ];
 
 self.addEventListener("install", (e) => {
